@@ -1,4 +1,4 @@
-package com.example.oauthexample.OAuth;
+package com.example.oauthexample;
 
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;

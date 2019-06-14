@@ -6,7 +6,8 @@ import java.util.List;
 import javax.servlet.Filter;
 import javax.servlet.FilterRegistration;
 
-import com.example.oauthexample.OAuth.ClientResources;
+import com.example.oauthexample.ClientResources;
+import com.example.oauthexample.Service.UserTokenService;
 import com.example.oauthexample.VO.SocialType;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true)
             .and()
                 .addFilterBefore(filter, CsrfFilter.class)
-                .addFilterBefore(oauthFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(oauth2Filter(), BasicAuthenticationFilter.class)
                 .csrf().disable();
     }
 
