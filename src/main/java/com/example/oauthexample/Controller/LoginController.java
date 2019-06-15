@@ -9,7 +9,6 @@ import com.example.oauthexample.VO.SocialType;
 import com.example.oauthexample.VO.User;
 
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -21,7 +20,7 @@ public class LoginController{
         return "login";
     }
 
-    @GetMapping(value="/{facebook|google|kakao}/complete")
+    @GetMapping(value="/loginSuccess")
     public String loginComplete( @SocialUser User user){
         return "redirect:/board/list";
     }

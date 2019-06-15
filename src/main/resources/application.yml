@@ -1,9 +1,9 @@
-google:
-    client:
-        clientId: CLIENT_ID_KEY
-        clientSecret: CLIENT_SECRET
-        accessTokenUri: https://accounts.google.com/o/oauth2/token
-        userAuthorizationUri: https://accounts.google.com/o/oauth2/auth
-        scope: email, profile, https://www.googleapis.com/auth/youtube
-    resource:
-        userInfoUri: https://www.googleapis.com/oauth2/v2/userinfo
+spring:
+    security:
+        oauth2:
+            client:
+                registration:
+                    google:
+                        client-id: CLIENT_ID
+                        client-secret: CLIENT_SECRET
+

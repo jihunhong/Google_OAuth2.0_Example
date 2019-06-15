@@ -16,7 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -45,12 +45,12 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
         if( user == null){
             try{
 
-                OAuth2Authentication authentication = (OAuth2Authentication) SecurityContextHolder.getContext()
+                OAuth2AuthenticationToken authentication = (OAuth2AuthenticationToken) SecurityContextHolder.getContext()
                         .getAuthentication();
 
-                Map<String, String> map = (Map<String, String>) authentication.getUserAuthentication().getDetails();
+                Map<String, Object> map = authentication.getPrincipal().getAttributes();
 
-                User convertUser = convertUser(String.valueOf(authentication.getAuthorities().toArray()[0]), map);
+                User convertUser = convertUser(authentication.getAuthorizedClientRegistrationId(), map);
 
                 user = userRepository.findByEmail(convertUser.getEmail());
                 if(user == null){ user = userRepository.save(convertUser); }
@@ -65,7 +65,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
         return user;
     }
 
-    private void setRoleIfNotSame(User user, OAuth2Authentication authentication, Map<String, String> map) {
+    private void setRoleIfNotSame(User user, OAuth2AuthenticationToken authentication, Map<String, Object> map) {
             
         if(!authentication.getAuthorities().contains( new SimpleGrantedAuthority(user.getSocialType().getRoleType())) ) {
                 SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(map, "N/A",
@@ -79,16 +79,16 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
                parameter.getParameterType().equals(User.class);
     }
 
-    private User convertUser(String authority, Map<String, String> map){
-        if(SocialType.GOOGLE.isEquals(authority)) return getModerUser(SocialType.GOOGLE, map);
+    private User convertUser(String authority, Map<String, Object> map){
+        if(SocialType.GOOGLE.getValue().equals(authority)) return getModernUser(SocialType.GOOGLE, map);
         else return null;
     }
 
-    private User getModerUser(SocialType socialType, Map<String, String> map) {
+    private User getModernUser(SocialType socialType, Map<String, Object> map) {
         return User.builder()
-                    .name(map.get("name"))
-                    .email(map.get("email"))
-                    .principal(map.get("principal"))
+                    .name(String.valueOf(map.get("name")))
+                    .email(String.valueOf(map.get("email")))
+                    .principal(String.valueOf(map.get("id")))
                     .socialType(socialType)
                     .createdDate(LocalDateTime.now())
                     .build();
