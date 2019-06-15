@@ -10,7 +10,7 @@
     <div class="container" style="text-align: center;">
     
         <a href="javascript:;" class="btn_social" data-social="google">
-            <img th:src="https://banner2.kisspng.com/20180603/lcu/kisspng-google-logo-google-search-google-account-5b13d7b19f5413.0778665315280270576526.jpg"/>
+            <img src="https://banner2.kisspng.com/20180603/lcu/kisspng-google-logo-google-search-google-account-5b13d7b19f5413.0778665315280270576526.jpg"/>
         </a>
     </div>
 
@@ -18,7 +18,7 @@
     <script>
         $('.btn_social').click(function(){
             var socialType = $(this).data('social');
-            local.href="/login/"+socialType;
+            location.href="/login/"+socialType;
         });
     </script>
 </body>
