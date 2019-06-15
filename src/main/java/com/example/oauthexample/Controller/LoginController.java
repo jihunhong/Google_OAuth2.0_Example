@@ -4,7 +4,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import com.example.oauthexample.Annotation.SocialUser;
 import com.example.oauthexample.VO.SocialType;
+import com.example.oauthexample.VO.User;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -20,7 +22,7 @@ public class LoginController{
     }
 
     @GetMapping(value="/{facebook|google|kakao}/complete")
-    public String loginComplete(@SocialUser User user){
+    public String loginComplete( @SocialUser User user){
         return "redirect:/board/list";
     }
 
